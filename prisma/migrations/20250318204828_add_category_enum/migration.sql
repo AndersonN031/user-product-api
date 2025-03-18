@@ -1,0 +1,6 @@
+-- CreateEnum
+CREATE TYPE "Category" AS ENUM ('ELETRONICOS', 'ACESSORIOS', 'PERIFERICOS', 'MOVEIS', 'AUDIO', 'UNCATEGORIZED');
+
+-- AlterTable
+ALTER TABLE "Product" ADD COLUMN     "category" "Category" NOT NULL DEFAULT 'UNCATEGORIZED',
+ADD COLUMN     "description" TEXT;

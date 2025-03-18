@@ -11,7 +11,7 @@ export class UsersController {
 
     @UseGuards(AuthGuard)
     @Get()
-    async findAll(@Query() params: FindAllParameters): Promise<UserDto[]> {
+    async findAll(@Param() params: FindAllParameters): Promise<UserDto[]> {
         return this.userService.findAll(params)
     }
 
