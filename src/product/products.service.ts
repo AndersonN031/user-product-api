@@ -1,10 +1,12 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateProductDto, UpdateProductDto } from './dto/create-product.dto';
-import { FindAllParameters, ProductCategory, ProductDto } from './dto/product.dto';
+import { ProductDto } from './dto/product.dto';
 import { UserDto } from 'src/users/dto/user.dto';
 import { UserWithProductsDto } from './dto/user-with-products.dto';
 import { Category } from '@prisma/client';
+import { ProductCategory } from './dto/product-category.enum';
+import { CreateProductDto } from './dto/create-product.dto';
+import { UpdateProductDto } from './dto/update-product-validator.dto';
 
 
 @Injectable()
@@ -47,6 +49,7 @@ export class ProductService {
             price: product.price,
             description: product.description,
             category: product.category,
+            quantity: product.quantity,
             userId: product.userId,
             createdAt: product.createdAt,
             updatedAt: product.updatedAt,
@@ -71,10 +74,21 @@ export class ProductService {
             throw new HttpException(`O usuário não foi encontrado`, HttpStatus.NOT_FOUND);
         }
 
+        if (newProduct.price < 0) {
+            throw new HttpException(`O preço não pode ser negativo`, HttpStatus.BAD_REQUEST);
+        }
+
+        if (newProduct.quantity < 0) {
+            throw new HttpException(`A quantidade não pode ser negativa`, HttpStatus.BAD_REQUEST);
+        }
+
         const createProduct = await this.prisma.product.create({
             data: {
                 name: newProduct.name,
                 price: newProduct.price,
+                description: newProduct.description,
+                category: newProduct.category as Category,
+                quantity: newProduct.quantity,
                 user: { connect: { id: userId } }
             }
         })
@@ -99,13 +113,22 @@ export class ProductService {
             throw new HttpException(`Produto não encontrado ou não pertence ao usuário`, HttpStatus.NOT_FOUND);
         }
 
+        if (params.price < 0) {
+            throw new HttpException(`O preço não pode ser negativo`, HttpStatus.BAD_REQUEST);
+        }
+
+        if (params.quantity < 0) {
+            throw new HttpException(`A quantidade não pode ser negativa`, HttpStatus.BAD_REQUEST);
+        }
+
         const updatedProduct = await this.prisma.product.update({
             where: { id: productId },
             data: {
                 name: params.name,
                 price: params.price,
                 description: params.description,
-                category: params.category as Category
+                category: params.category as Category,
+                quantity: params.quantity
             }
         })
 

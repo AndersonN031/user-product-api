@@ -1,9 +1,13 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, Request, UseGuards } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { ProductService } from './products.service';
-import { FindAllParameters, ProductCategory, ProductDto, UpdateProductDto } from './dto/product.dto';
+import { ProductDto } from './dto/product.dto';
 import { UserWithProductsDto } from './dto/user-with-products.dto';
+import { ProductCategory } from './dto/product-category.enum';
+import { UpdateProductDto } from './dto/update-product-validator.dto';
+import { AuthGuard } from 'src/auth/auth.guard';
 
+@UseGuards(AuthGuard)
 @Controller('products')
 export class ProductController {
     constructor(private readonly productsServices: ProductService) { }

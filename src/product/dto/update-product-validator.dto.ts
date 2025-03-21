@@ -1,7 +1,7 @@
-import { IsEnum, IsNumber, IsString } from "class-validator";
 import { Category } from "@prisma/client";
+import { IsEnum, IsNumber, IsString } from "class-validator";
 
-export class CreateProductDto {
+export class UpdateProductDto {
     @IsString()
     name: string;
 
@@ -16,6 +16,4 @@ export class CreateProductDto {
 
     @IsNumber()
     quantity: number;
-
 }
-

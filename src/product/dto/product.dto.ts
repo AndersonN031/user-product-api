@@ -1,3 +1,5 @@
+//product.dto.ts
+
 import { UserDto } from "src/users/dto/user.dto";
 
 export class ProductDto {
@@ -6,17 +8,12 @@ export class ProductDto {
     price: number;
     description: string | null
     category: string;
+    quantity: number;
     userId: string;
     createdAt: Date;
     updatedAt: Date;
 }
 
-export class UpdateProductDto {
-    name: string;
-    price: number;
-    description: string
-    category: string;
-}
 
 export interface FindAllParameters {
     id: string;
@@ -28,11 +25,3 @@ export interface FindAllParameters {
     updatedAt: Date;
 }
 
-export enum ProductCategory {
-    ELETRONICOS = "ELETRONICOS",
-    ACESSORIOS = "ACESSORIOS",
-    PERIFERICOS = "PERIFERICOS",
-    MOVEIS = "MOVEIS",
-    AUDIO = "AUDIO",
-    UNCATEGORIZED = "UNCATEGORIZED"
-}

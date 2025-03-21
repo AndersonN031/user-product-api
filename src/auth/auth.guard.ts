@@ -8,8 +8,8 @@ export class AuthGuard implements CanActivate {
   private jwtSecret: string;
   constructor(
     private readonly jwtService: JwtService,
-    private readonly configService: ConfigService
-  ) { 
+    private readonly configService: ConfigService,
+  ) {
     this.jwtSecret = this.configService.get<string>('JWT_SECRET') ?? 'default-secret';
   }
 
@@ -25,9 +25,11 @@ export class AuthGuard implements CanActivate {
       const payload = await this.jwtService.verifyAsync(
         token,
         {
-          secret: this.jwtSecret 
+          secret: this.jwtSecret
         }
+
       );
+
       request['user'] = payload;
     } catch {
       throw new UnauthorizedException();
